@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Audit Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact; 
+        }
+
+        body { background-color: #525659; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        
+        #report {
+            width: 210mm;
+            height: 297mm;
+            padding: 10mm;
+            background: white;
+            font-family: Arial, sans-serif;
+            font-size: 9pt;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #000;
+        }
+
+        h1 { text-align: center; text-decoration: underline; font-size: 14pt; margin: 0 0 10px 0; }
+        
+        .section-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
+        .section-table td { border: 1px solid black; padding: 4px; vertical-align: middle; width: 50%; }
+        .label { font-weight: bold; }
+        
+        input[type="text"] { border: none; border-bottom: 1px solid #eee; width: 65%; font-size: 9pt; outline: none; }
+
+        .checklist-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            border-top: 1px solid black; 
+            border-left: 1px solid black;
+        }
+        .check-item { 
+            border-right: 1px solid black; 
+            border-bottom: 1px solid black; 
+            padding: 2px 8px; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 8pt;
+            height: 22px;
+            align-items: center;
+        }
+
+        .review-header { background: #f2f2f2; border: 1px solid black; border-top: none; padding: 3px; font-weight: bold; text-align: center; }
+        .review-row { display: flex; border: 1px solid black; border-top: none; padding: 2px 8px; align-items: center; font-size: 8pt; }
+        .review-row span { width: 45%; }
+        
+        /* Dropdown Styling */
+        select { 
+            width: 55%; 
+            font-size: 8pt; 
+            border: 1px solid #ccc; 
+            border-radius: 2px;
+            padding: 1px;
+        }
+
+        .footer-table { margin-top: auto; width: 100%; border-collapse: collapse; }
+        .footer-table td { border: 1px solid black; padding: 5px; vertical-align: top; }
+        
+        .sig-container {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 1px dashed #ccc;
+            margin-top: 5px;
+        }
+        #uploaded-sig-img { max-height: 70px; max-width: 100%; display: none; }
+        .upload-controls { margin-top: 5px; font-size: 8pt; color: #d35400; font-weight: bold; }
+
+        .dl-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; cursor: pointer; font-weight: bold; margin-bottom: 10px; border-radius: 4px; font-size: 11pt; }
+        
+        @media print { 
+            .upload-controls, .dl-btn, select::-ms-expand { display: none; } 
+            select { border: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; color: black; }
+            .sig-container { border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="dl-btn" onclick="downloadPDF()">DOWNLOAD REPORT (A4 FORMAT)</button>
+
+    <div id="report">
+        <h1>Vehicle Audit Report</h1>
+
+        <table class="section-table">
+            <tr>
+                <td><span class="label">Vehicle No:</span> <input type="text"></td>
+                <td><span class="label">Route Name:</span> <input type="text"></td>
+            </tr>
+            <tr>
+                <td><span class="label">Contractor:</span> <input type="text"></td>
+                <td><span class="label">Driver Name:</span> <input type="text"></td>
+            </tr>
+            <tr>
+                <td><span class="label">Capacity:</span> <input type="text"></td>
+                <td><span class="label">Vehicle Shift:</span> <input type="text"></td>
+            </tr>
+        </table>
+
+        <div class="checklist-container">
+            <div class="check-item">Jack <input type="checkbox"></div>
+            <div class="check-item">Internal Light <input type="checkbox"></div>
+            <div class="check-item">Fire Extinguisher <input type="checkbox"></div>
+            <div class="check-item">First Aid Kit <input type="checkbox"></div>
+            <div class="check-item">Spanner <input type="checkbox"></div>
+            <div class="check-item">Log Book <input type="checkbox"></div>
+            <div class="check-item">Tomy <input type="checkbox"></div>
+            <div class="check-item">Music System <input type="checkbox"></div>
+           <div class="review-row"><span>Registration Certificate</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+            <div class="check-item">Toolkit <input type="checkbox"></div>
+            <div class="check-item">Uniform <input type="checkbox"></div>
+           <div class="review-row"><span>PUC</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+
+            <div class="check-item">Shoes <input type="checkbox"></div>
+            <div class="check-item">Seat Caps <input type="checkbox"></div>
+            <div class="review-row"><span>Insurance</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+
+            <div class="check-item">Seat Handle <input type="checkbox"></div>
+            <div class="check-item">Battery <input type="checkbox"></div>
+            <div class="review-row"><span>Fitness</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+
+            <div class="check-item">Eme. Window <input type="checkbox"></div>
+            <div class="check-item">Wiper <input type="checkbox"></div>
+            <div class="review-row"><span>Tax</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+
+            <div class="check-item">Seat Belt <input type="checkbox"></div>
+            <div class="check-item">Mirrors <input type="checkbox"></div>
+            <div class="review-row"><span>Permit</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+
+            <div class="check-item">Spare Wheel <input type="checkbox"></div>
+            <div class="check-item">Foot Mat <input type="checkbox"></div>
+            <div class="check-item">Driver License <input type="checkbox"></div>
+            <div class="check-item">Policies <input type="checkbox"></div>
+            <div class="check-item">Emer. Door operation <input type="checkbox"></div>
+            <div class="check-item">Sanitizer Bottle <input type="checkbox"></div>
+        </div>
+
+        <div class="review-header">Operations / Review</div>
+        
+        <div class="review-row"><span>Engine starting and smoothness</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Stearing</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Clutch & Breake</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Gear</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Suspension</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Light, Horn</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>All Door and Window</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Oil Leakage</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>TYRE CONDITONS</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Driver Behaviour</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Cleaning of the Vehicle</span> 
+            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+        </div>
+        <div class="review-row"><span>Other Remark</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+
+        <table class="footer-table">
+            <tr>
+                <td><span class="label">Audited By:</span> Vrushal Chobhe</td>
+                <td><span class="label">Date:</span> <span id="dt"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span class="label">Transport Sup. Sign:</span>
+                    <div class="upload-controls">
+                         <input type="file" id="sig-upload" accept="image/*" onchange="previewSignature(event)">
+                    </div>
+                    <div class="sig-container">
+                        <img id="uploaded-sig-img" src="" alt="Signature Preview">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('dt').innerText = new Date().toLocaleDateString('en-GB');
+
+        function previewSignature(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('uploaded-sig-img');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('report');
+            const opt = {
+                margin: 0,
+                filename: 'Bus_Audit_Report.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
