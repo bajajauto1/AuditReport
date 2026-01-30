@@ -12,11 +12,19 @@
             print-color-adjust: exact; 
         }
 
-        body { background-color: #525659; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        body { 
+            background-color: #525659; 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
         
         #report {
-            width: 210mm;
-            height: 297mm;
+            width: 100%; /* Full width on mobile */
+            max-width: 210mm; /* Maximum A4 width */
+            min-height: 297mm;
             padding: 10mm;
             background: white;
             font-family: Arial, sans-serif;
@@ -24,6 +32,7 @@
             display: flex;
             flex-direction: column;
             border: 1px solid #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         h1 { text-align: center; text-decoration: underline; font-size: 14pt; margin: 0 0 10px 0; }
@@ -32,7 +41,7 @@
         .section-table td { border: 1px solid black; padding: 4px; vertical-align: middle; width: 50%; }
         .label { font-weight: bold; }
         
-        input[type="text"] { border: none; border-bottom: 1px solid #eee; width: 65%; font-size: 9pt; outline: none; }
+        input[type="text"] { border: none; border-bottom: 1px solid #eee; width: 60%; font-size: 9pt; outline: none; }
 
         .checklist-container { 
             display: grid; 
@@ -40,24 +49,29 @@
             border-top: 1px solid black; 
             border-left: 1px solid black;
         }
+        
+        /* Mobile adjustment for checklist */
+        @media (max-width: 600px) {
+            .checklist-container { grid-template-columns: 1fr; }
+        }
+
         .check-item { 
             border-right: 1px solid black; 
             border-bottom: 1px solid black; 
-            padding: 2px 8px; 
+            padding: 4px 8px; 
             display: flex; 
             justify-content: space-between; 
             font-size: 8pt;
-            height: 22px;
+            min-height: 22px;
             align-items: center;
         }
 
         .review-header { background: #f2f2f2; border: 1px solid black; border-top: none; padding: 3px; font-weight: bold; text-align: center; }
-        .review-row { display: flex; border: 1px solid black; border-top: none; padding: 2px 8px; align-items: center; font-size: 8pt; }
-        .review-row span { width: 45%; }
+        .review-row { display: flex; border: 1px solid black; border-top: none; padding: 4px 8px; align-items: center; font-size: 8pt; }
+        .review-row span { width: 50%; }
         
-        /* Dropdown Styling */
         select { 
-            width: 55%; 
+            width: 50%; 
             font-size: 8pt; 
             border: 1px solid #ccc; 
             border-radius: 2px;
@@ -80,11 +94,25 @@
         #uploaded-sig-img { max-height: 70px; max-width: 100%; display: none; }
         .upload-controls { margin-top: 5px; font-size: 8pt; color: #d35400; font-weight: bold; }
 
-        .dl-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; cursor: pointer; font-weight: bold; margin-bottom: 10px; border-radius: 4px; font-size: 11pt; }
+        .dl-btn { 
+            background: #27ae60; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            border-radius: 4px; 
+            font-size: 11pt;
+            width: 100%;
+            max-width: 210mm;
+        }
         
         @media print { 
-            .upload-controls, .dl-btn, select::-ms-expand { display: none; } 
-            select { border: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; color: black; }
+            body { background: none; padding: 0; }
+            #report { border: none; box-shadow: none; width: 210mm; }
+            .upload-controls, .dl-btn { display: none; } 
+            select { border: none; -webkit-appearance: none; appearance: none; color: black; }
             .sig-container { border: none; }
         }
     </style>
@@ -120,27 +148,22 @@
             <div class="check-item">Log Book <input type="checkbox"></div>
             <div class="check-item">Tomy <input type="checkbox"></div>
             <div class="check-item">Music System <input type="checkbox"></div>
-           <div class="review-row"><span>Registration Certificate</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+            <div class="check-item">Registration Certificate <input type="text" style="width: 40%;"></div>
             <div class="check-item">Toolkit <input type="checkbox"></div>
             <div class="check-item">Uniform <input type="checkbox"></div>
-           <div class="review-row"><span>PUC</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-
+            <div class="check-item">PUC <input type="text" style="width: 40%;"></div>
             <div class="check-item">Shoes <input type="checkbox"></div>
             <div class="check-item">Seat Caps <input type="checkbox"></div>
-            <div class="review-row"><span>Insurance</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-
+            <div class="check-item">Insurance <input type="text" style="width: 40%;"></div>
             <div class="check-item">Seat Handle <input type="checkbox"></div>
             <div class="check-item">Battery <input type="checkbox"></div>
-            <div class="review-row"><span>Fitness</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-
+            <div class="check-item">Fitness <input type="text" style="width: 40%;"></div>
             <div class="check-item">Eme. Window <input type="checkbox"></div>
             <div class="check-item">Wiper <input type="checkbox"></div>
-            <div class="review-row"><span>Tax</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-
+            <div class="check-item">Tax <input type="text" style="width: 40%;"></div>
             <div class="check-item">Seat Belt <input type="checkbox"></div>
             <div class="check-item">Mirrors <input type="checkbox"></div>
-            <div class="review-row"><span>Permit</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-
+            <div class="check-item">Permit <input type="text" style="width: 40%;"></div>
             <div class="check-item">Spare Wheel <input type="checkbox"></div>
             <div class="check-item">Foot Mat <input type="checkbox"></div>
             <div class="check-item">Driver License <input type="checkbox"></div>
@@ -184,7 +207,7 @@
         <div class="review-row"><span>Cleaning of the Vehicle</span> 
             <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
         </div>
-        <div class="review-row"><span>Other Remark</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
+        <div class="review-row"><span>Other Remark</span> <input type="text" style="width: 50%; border-bottom: 1px solid #ccc;"></div>
 
         <table class="footer-table">
             <tr>
