@@ -12,19 +12,11 @@
             print-color-adjust: exact; 
         }
 
-        body { 
-            background-color: #525659; 
-            margin: 0; 
-            padding: 10px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
+        body { background-color: #525659; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
         
         #report {
-            width: 100%; /* Full width on mobile */
-            max-width: 210mm; /* Maximum A4 width */
-            min-height: 297mm;
+            width: 210mm;
+            height: 297mm;
             padding: 10mm;
             background: white;
             font-family: Arial, sans-serif;
@@ -32,7 +24,6 @@
             display: flex;
             flex-direction: column;
             border: 1px solid #000;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         h1 { text-align: center; text-decoration: underline; font-size: 14pt; margin: 0 0 10px 0; }
@@ -41,7 +32,7 @@
         .section-table td { border: 1px solid black; padding: 4px; vertical-align: middle; width: 50%; }
         .label { font-weight: bold; }
         
-        input[type="text"] { border: none; border-bottom: 1px solid #eee; width: 60%; font-size: 9pt; outline: none; }
+        input[type="text"] { border: none; border-bottom: 1px solid #eee; width: 65%; font-size: 9pt; outline: none; }
 
         .checklist-container { 
             display: grid; 
@@ -49,34 +40,42 @@
             border-top: 1px solid black; 
             border-left: 1px solid black;
         }
-        
-        /* Mobile adjustment for checklist */
-        @media (max-width: 600px) {
-            .checklist-container { grid-template-columns: 1fr; }
-        }
-
         .check-item { 
             border-right: 1px solid black; 
             border-bottom: 1px solid black; 
-            padding: 4px 8px; 
+            padding: 2px 8px; 
             display: flex; 
             justify-content: space-between; 
             font-size: 8pt;
-            min-height: 22px;
+            height: 22px;
             align-items: center;
         }
 
         .review-header { background: #f2f2f2; border: 1px solid black; border-top: none; padding: 3px; font-weight: bold; text-align: center; }
-        .review-row { display: flex; border: 1px solid black; border-top: none; padding: 4px 8px; align-items: center; font-size: 8pt; }
-        .review-row span { width: 50%; }
+        .review-row { display: flex; border: 1px solid black; border-top: none; padding: 2px 8px; align-items: center; font-size: 8pt; }
+        .review-row span { width: 45%; }
         
         select { 
-            width: 50%; 
+            width: 55%; 
             font-size: 8pt; 
             border: 1px solid #ccc; 
             border-radius: 2px;
             padding: 1px;
         }
+
+        /* Photo Area Styling */
+        .photo-container {
+            width: 100%;
+            height: 150px;
+            border: 1px solid black;
+            border-top: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #fafafa;
+        }
+        #vehicle-photo { max-height: 100%; max-width: 100%; display: none; }
 
         .footer-table { margin-top: auto; width: 100%; border-collapse: collapse; }
         .footer-table td { border: 1px solid black; padding: 5px; vertical-align: top; }
@@ -94,32 +93,25 @@
         #uploaded-sig-img { max-height: 70px; max-width: 100%; display: none; }
         .upload-controls { margin-top: 5px; font-size: 8pt; color: #d35400; font-weight: bold; }
 
-        .dl-btn { 
-            background: #27ae60; 
-            color: white; 
-            border: none; 
-            padding: 12px 24px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-bottom: 10px; 
-            border-radius: 4px; 
-            font-size: 11pt;
-            width: 100%;
-            max-width: 210mm;
-        }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 10px; }
+        .dl-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 11pt; }
+        .cam-btn { background: #2980b9; color: white; border: none; padding: 12px 24px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 11pt; }
         
         @media print { 
-            body { background: none; padding: 0; }
-            #report { border: none; box-shadow: none; width: 210mm; }
-            .upload-controls, .dl-btn { display: none; } 
-            select { border: none; -webkit-appearance: none; appearance: none; color: black; }
+            .upload-controls, .btn-group, select::-ms-expand, #photo-input { display: none; } 
+            select { border: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; color: black; }
             .sig-container { border: none; }
         }
     </style>
 </head>
 <body>
 
-    <button class="dl-btn" onclick="downloadPDF()">DOWNLOAD REPORT (A4 FORMAT)</button>
+    <div class="btn-group">
+        <button class="cam-btn" onclick="document.getElementById('photo-input').click()">📸 TAKE LIVE PHOTO</button>
+        <button class="dl-btn" onclick="downloadPDF()">DOWNLOAD REPORT (A4 FORMAT)</button>
+    </div>
+
+    <input type="file" id="photo-input" accept="image/*" capture="environment" style="display: none;" onchange="previewVehiclePhoto(event)">
 
     <div id="report">
         <h1>Vehicle Audit Report</h1>
@@ -139,6 +131,11 @@
             </tr>
         </table>
 
+        <div class="review-header">Vehicle Live Photo</div>
+        <div class="photo-container">
+            <img id="vehicle-photo" src="" alt="Vehicle Photo">
+        </div>
+
         <div class="checklist-container">
             <div class="check-item">Jack <input type="checkbox"></div>
             <div class="check-item">Internal Light <input type="checkbox"></div>
@@ -148,22 +145,22 @@
             <div class="check-item">Log Book <input type="checkbox"></div>
             <div class="check-item">Tomy <input type="checkbox"></div>
             <div class="check-item">Music System <input type="checkbox"></div>
-            <div class="check-item">Registration Certificate <input type="text" style="width: 40%;"></div>
+            <div class="review-row"><span>Registration Certificate</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
             <div class="check-item">Toolkit <input type="checkbox"></div>
             <div class="check-item">Uniform <input type="checkbox"></div>
-            <div class="check-item">PUC <input type="text" style="width: 40%;"></div>
+            <div class="review-row"><span>PUC</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
             <div class="check-item">Shoes <input type="checkbox"></div>
             <div class="check-item">Seat Caps <input type="checkbox"></div>
-            <div class="check-item">Insurance <input type="text" style="width: 40%;"></div>
+            <div class="review-row"><span>Insurance</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
             <div class="check-item">Seat Handle <input type="checkbox"></div>
             <div class="check-item">Battery <input type="checkbox"></div>
-            <div class="check-item">Fitness <input type="text" style="width: 40%;"></div>
+            <div class="review-row"><span>Fitness</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
             <div class="check-item">Eme. Window <input type="checkbox"></div>
             <div class="check-item">Wiper <input type="checkbox"></div>
-            <div class="check-item">Tax <input type="text" style="width: 40%;"></div>
+            <div class="review-row"><span>Tax</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
             <div class="check-item">Seat Belt <input type="checkbox"></div>
             <div class="check-item">Mirrors <input type="checkbox"></div>
-            <div class="check-item">Permit <input type="text" style="width: 40%;"></div>
+            <div class="review-row"><span>Permit</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
             <div class="check-item">Spare Wheel <input type="checkbox"></div>
             <div class="check-item">Foot Mat <input type="checkbox"></div>
             <div class="check-item">Driver License <input type="checkbox"></div>
@@ -207,7 +204,7 @@
         <div class="review-row"><span>Cleaning of the Vehicle</span> 
             <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
         </div>
-        <div class="review-row"><span>Other Remark</span> <input type="text" style="width: 50%; border-bottom: 1px solid #ccc;"></div>
+        <div class="review-row"><span>Other Remark</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
 
         <table class="footer-table">
             <tr>
@@ -230,6 +227,18 @@
 
     <script>
         document.getElementById('dt').innerText = new Date().toLocaleDateString('en-GB');
+
+        function previewVehiclePhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('vehicle-photo');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
 
         function previewSignature(event) {
             const reader = new FileReader();
