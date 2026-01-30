@@ -12,17 +12,9 @@
             print-color-adjust: exact; 
         }
 
-        body { 
-            background-color: #525659; 
-            margin: 0; 
-            padding: 10px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
+        body { background-color: #525659; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
         
         #report {
-            /* Responsive Fix: Use 100% width on mobile, but max out at A4 size */
             width: 100%;
             max-width: 210mm;
             min-height: 297mm;
@@ -49,8 +41,7 @@
             border-top: 1px solid black; 
             border-left: 1px solid black;
         }
-
-        /* Responsive Fix: Stack checklist items on very small screens */
+        
         @media (max-width: 500px) {
             .checklist-container { grid-template-columns: 1fr; }
         }
@@ -70,6 +61,12 @@
         .review-row { display: flex; border: 1px solid black; border-top: none; padding: 2px 8px; align-items: center; font-size: 8pt; }
         .review-row span { width: 45%; }
         
+        /* Specific styling for the 4-column Tyre row */
+        .tyre-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; width: 100%; border: 1px solid black; border-top: none; font-size: 8pt; }
+        .tyre-col { border-right: 1px solid black; padding: 4px; display: flex; flex-direction: column; align-items: center; }
+        .tyre-col:last-child { border-right: none; }
+        .tyre-col select { width: 95%; margin-top: 2px; }
+
         select { 
             width: 55%; 
             font-size: 8pt; 
@@ -211,9 +208,27 @@
         <div class="review-row"><span>Oil Leakage</span> 
             <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
         </div>
-        <div class="review-row"><span>TYRE CONDITONS</span> 
-            <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+
+        <div class="review-header" style="border-top: none;">TYRE CONDITIONS</div>
+        <div class="tyre-grid">
+            <div class="tyre-col">
+                <b>Front Left</b>
+                <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+            </div>
+            <div class="tyre-col">
+                <b>Front Right</b>
+                <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+            </div>
+            <div class="tyre-col">
+                <b>Rear Left</b>
+                <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+            </div>
+            <div class="tyre-col">
+                <b>Rear Right</b>
+                <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
+            </div>
         </div>
+
         <div class="review-row"><span>Driver Behaviour</span> 
             <select><option>Satisfactory</option><option>Good</option><option>Poor</option><option>Not Working</option></select>
         </div>
