@@ -57,11 +57,13 @@
             align-items: center;
         }
 
+        .yn-group { display: flex; gap: 5px; align-items: center; }
+        .yn-group label { font-size: 7pt; margin-right: 2px; }
+
         .review-header { background: #f2f2f2; border: 1px solid black; border-top: none; padding: 3px; font-weight: bold; text-align: center; }
         .review-row { display: flex; border: 1px solid black; border-top: none; padding: 2px 8px; align-items: center; font-size: 8pt; }
         .review-row span { width: 45%; }
         
-        /* Specific styling for the 4-column Tyre row */
         .tyre-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; width: 100%; border: 1px solid black; border-top: none; font-size: 8pt; }
         .tyre-col { border-right: 1px solid black; padding: 4px; display: flex; flex-direction: column; align-items: center; }
         .tyre-col:last-child { border-right: none; }
@@ -98,11 +100,10 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            border: 1px dashed #ccc;
             margin-top: 5px;
         }
-        #uploaded-sig-img { max-height: 70px; max-width: 100%; display: none; }
-        .upload-controls { margin-top: 5px; font-size: 8pt; color: #d35400; font-weight: bold; }
+        /* Style for the permanent signature image */
+        #permanent-sig-img { max-height: 70px; max-width: 100%; object-fit: contain; }
 
         .btn-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; width: 100%; max-width: 210mm; }
         .dl-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 11pt; flex: 1; min-width: 200px; }
@@ -111,9 +112,8 @@
         @media print { 
             body { padding: 0; background: white; }
             #report { width: 210mm; border: 1px solid #000; box-shadow: none; }
-            .upload-controls, .btn-group, select::-ms-expand, #photo-input { display: none; } 
+            .btn-group, select::-ms-expand, #photo-input { display: none; } 
             select { border: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; color: black; }
-            .sig-container { border: none; }
         }
     </style>
 </head>
@@ -150,36 +150,48 @@
         </div>
 
         <div class="checklist-container">
-            <div class="check-item">Jack <input type="checkbox"></div>
-            <div class="check-item">Internal Light <input type="checkbox"></div>
-            <div class="check-item">Fire Extinguisher <input type="checkbox"></div>
-            <div class="check-item">First Aid Kit <input type="checkbox"></div>
-            <div class="check-item">Spanner <input type="checkbox"></div>
-            <div class="check-item">Log Book <input type="checkbox"></div>
-            <div class="check-item">Tomy <input type="checkbox"></div>
-            <div class="check-item">Music System <input type="checkbox"></div>
+            <div class="check-item">Jack <div class="yn-group"><label>Y</label><input type="radio" name="jack"> <label>N</label><input type="radio" name="jack"></div></div>
+            <div class="check-item">Internal Light <div class="yn-group"><label>Y</label><input type="radio" name="light"> <label>N</label><input type="radio" name="light"></div></div>
+            <div class="check-item">Fire Extinguisher <div class="yn-group"><label>Y</label><input type="radio" name="fire"> <label>N</label><input type="radio" name="fire"></div></div>
+            <div class="check-item">First Aid Kit <div class="yn-group"><label>Y</label><input type="radio" name="aid"> <label>N</label><input type="radio" name="aid"></div></div>
+            <div class="check-item">Spanner <div class="yn-group"><label>Y</label><input type="radio" name="spanner"> <label>N</label><input type="radio" name="spanner"></div></div>
+            <div class="check-item">Log Book <div class="yn-group"><label>Y</label><input type="radio" name="log"> <label>N</label><input type="radio" name="log"></div></div>
+            <div class="check-item">Tomy <div class="yn-group"><label>Y</label><input type="radio" name="tomy"> <label>N</label><input type="radio" name="tomy"></div></div>
+            <div class="check-item">Music System <div class="yn-group"><label>Y</label><input type="radio" name="music"> <label>N</label><input type="radio" name="music"></div></div>
+            
             <div class="review-row"><span>Registration Certificate</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-            <div class="check-item">Toolkit <input type="checkbox"></div>
-            <div class="check-item">Uniform <input type="checkbox"></div>
+            
+            <div class="check-item">Toolkit <div class="yn-group"><label>Y</label><input type="radio" name="toolkit"> <label>N</label><input type="radio" name="toolkit"></div></div>
+            <div class="check-item">Uniform <div class="yn-group"><label>Y</label><input type="radio" name="uniform"> <label>N</label><input type="radio" name="uniform"></div></div>
+            
             <div class="review-row"><span>PUC</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-            <div class="check-item">Shoes <input type="checkbox"></div>
-            <div class="check-item">Seat Caps <input type="checkbox"></div>
+            
+            <div class="check-item">Shoes <div class="yn-group"><label>Y</label><input type="radio" name="shoes"> <label>N</label><input type="radio" name="shoes"></div></div>
+            <div class="check-item">Seat Caps <div class="yn-group"><label>Y</label><input type="radio" name="caps"> <label>N</label><input type="radio" name="caps"></div></div>
+            
             <div class="review-row"><span>Insurance</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-            <div class="check-item">Seat Handle <input type="checkbox"></div>
-            <div class="check-item">Battery <input type="checkbox"></div>
+            
+            <div class="check-item">Seat Handle <div class="yn-group"><label>Y</label><input type="radio" name="handle"> <label>N</label><input type="radio" name="handle"></div></div>
+            <div class="check-item">Battery <div class="yn-group"><label>Y</label><input type="radio" name="battery"> <label>N</label><input type="radio" name="battery"></div></div>
+            
             <div class="review-row"><span>Fitness</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-            <div class="check-item">Eme. Window <input type="checkbox"></div>
-            <div class="check-item">Wiper <input type="checkbox"></div>
+            
+            <div class="check-item">Eme. Window <div class="yn-group"><label>Y</label><input type="radio" name="window"> <label>N</label><input type="radio" name="window"></div></div>
+            <div class="check-item">Wiper <div class="yn-group"><label>Y</label><input type="radio" name="wiper"> <label>N</label><input type="radio" name="wiper"></div></div>
+            
             <div class="review-row"><span>Tax</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-            <div class="check-item">Seat Belt <input type="checkbox"></div>
-            <div class="check-item">Mirrors <input type="checkbox"></div>
+            
+            <div class="check-item">Seat Belt <div class="yn-group"><label>Y</label><input type="radio" name="belt"> <label>N</label><input type="radio" name="belt"></div></div>
+            <div class="check-item">Mirrors <div class="yn-group"><label>Y</label><input type="radio" name="mirror"> <label>N</label><input type="radio" name="mirror"></div></div>
+            
             <div class="review-row"><span>Permit</span> <input type="text" style="width: 55%; border-bottom: 1px solid #ccc;"></div>
-            <div class="check-item">Spare Wheel <input type="checkbox"></div>
-            <div class="check-item">Foot Mat <input type="checkbox"></div>
-            <div class="check-item">Driver License <input type="checkbox"></div>
-            <div class="check-item">Policies <input type="checkbox"></div>
-            <div class="check-item">Emer. Door operation <input type="checkbox"></div>
-            <div class="check-item">Sanitizer Bottle <input type="checkbox"></div>
+            
+            <div class="check-item">Spare Wheel <div class="yn-group"><label>Y</label><input type="radio" name="wheel"> <label>N</label><input type="radio" name="wheel"></div></div>
+            <div class="check-item">Foot Mat <div class="yn-group"><label>Y</label><input type="radio" name="mat"> <label>N</label><input type="radio" name="mat"></div></div>
+            <div class="check-item">Driver License <div class="yn-group"><label>Y</label><input type="radio" name="license"> <label>N</label><input type="radio" name="license"></div></div>
+            <div class="check-item">Policies <div class="yn-group"><label>Y</label><input type="radio" name="policies"> <label>N</label><input type="radio" name="policies"></div></div>
+            <div class="check-item">Emer. Door operation <div class="yn-group"><label>Y</label><input type="radio" name="door"> <label>N</label><input type="radio" name="door"></div></div>
+            <div class="check-item">Sanitizer Bottle <div class="yn-group"><label>Y</label><input type="radio" name="sanitizer"> <label>N</label><input type="radio" name="sanitizer"></div></div>
         </div>
 
         <div class="review-header">Operations / Review</div>
@@ -244,12 +256,9 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <span class="label">Transport Sup. Sign:</span>
-                    <div class="upload-controls">
-                         <input type="file" id="sig-upload" accept="image/*" onchange="previewSignature(event)">
-                    </div>
+                    <span class="label">Transport Officer Sign:</span>
                     <div class="sig-container">
-                        <img id="uploaded-sig-img" src="" alt="Signature Preview">
+                        <img id="permanent-sig-img" src="sign.jpg" alt="Officer Signature">
                     </div>
                 </td>
             </tr>
@@ -271,16 +280,6 @@
             }
         }
 
-        function previewSignature(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById('uploaded-sig-img');
-                output.src = reader.result;
-                output.style.display = 'block';
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
         function downloadPDF() {
             const element = document.getElementById('report');
             const opt = {
@@ -295,4 +294,3 @@
     </script>
 </body>
 </html>
-
